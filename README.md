@@ -47,3 +47,8 @@ The compiler does not know how to store the value. Should it be a string? Array?
   hello : string = "wow";
   testPointer : pointer = hello
   ```
+
+## More
+
+You thought ; was needed, didn't you? Ummm...me too 😅. Semi colon will most probably be needed, but, I will try to make it like JavaScript. So it will automatically get injected. (This will be possible to disable, if you like ;)
+
