@@ -48,6 +48,22 @@ The compiler does not know how to store the value. Should it be a string? Array?
   testPointer : pointer = hello
   ```
 
+## Settings 
+Settings is a big part of this language. Some parts of the language might not be liked by everyone. This is why settings can be fun. You can access settings using `@:` and stop using it with`@;`.
+Example:
+```
+hello : string = this need semi colon.;
+log hello;
+
+@:
+semi_colon_at_end_of_line = false;
+@;
+
+hello : string = this need semi colon.
+log hello
+```
+Keep in mind that everything in `@: @;` will use the default parser.
+
 ## More
 
 You thought ; was needed, didn't you? Ummm...me too 😅. Semi colon will most probably be needed, but, I will try to make it like JavaScript. So it will automatically get injected. (This will be possible to disable, if you like ;)
