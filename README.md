@@ -85,3 +85,17 @@ hello : func = log('wow');
 hello;
 // logs "wow". (as long wow is not defined)
 ```
+
+
+## Specifications
+
+### Types
+
+`const` is used for values and types that can NOT be changed.
+
+`var` is for values that can be changed but the type can not be changed.
+
+`let` is for values and types that can be changed
+
+
+
