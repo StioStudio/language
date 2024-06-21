@@ -52,3 +52,20 @@ The compiler does not know how to store the value. Should it be a string? Array?
 
 You thought ; was needed, didn't you? Ummm...me too 😅. Semi colon will most probably be needed, but, I will try to make it like JavaScript. So it will automatically get injected. (This will be possible to disable, if you like ;)
 
+The weird thing with this language being that (, {, [, ", and ' is the same. This makes it so that:
+```
+hello :func= "log('hello')";
+hello;
+```
+Will log "log('hello')". Now that can be annoying, and probably not what you wanted. The fix for this being types:
+```
+hello : func = "log('hello': string :)";
+hello;
+```
+Now needing to type `: string :` after every string can be teadios. So `"` and `'` will "prefer" being string. This will apply to `[]` too.
+Example:
+```
+hello : func = log('wow');
+hello;
+// logs "wow". (as long wow is not defined)
+```
