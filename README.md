@@ -1,4 +1,6 @@
-[Basics](#Basics)
+## Navigation:
+* [Basics](#Basics)
+* [Types](#Types)
 
 ## Basics
 Defines the log function. Parameter inputs is typed and only will allow string and num. 
