@@ -172,15 +172,22 @@ class Compiler {
     }
 }
 
-const code = `hello : constant, string = wow, this works?; log hello;`;
+document.querySelector('#input').addEventListener('input', event => {
+    const output = document.querySelector('#output');
 
-const tokenizer = new Tokenizer(code);
-const tokens = tokenizer.tokenize();
+    const code = event.target.value;
+    // const code = `hello : constant, string = wow, this works?; log hello;`;
 
-const parser = new Parser(tokens);
-const ast = parser.parse();
+    const tokenizer = new Tokenizer(code);
+    const tokens = tokenizer.tokenize();
 
-const compiler = new Compiler(ast);
-const assemblyCode = compiler.compile();
+    const parser = new Parser(tokens);
+    const ast = parser.parse();
 
-console.log(assemblyCode);
+    const compiler = new Compiler(ast);
+    const assemblyCode = compiler.compile();
+
+    console.log(assemblyCode);
+
+    output.value = assemblyCode;
+})
