@@ -1,0 +1,211 @@
+Creating a compiler for your custom language involves several key steps. Here’s an initial implementation using JavaScript, which should be understandable and extendable.
+
+### Step 1: Define Token Types
+First, let's define the basic tokens of your language.
+
+```javascript
+// Token types
+const TOKEN_TYPES = {
+    KEYWORD: 'KEYWORD',
+    IDENTIFIER: 'IDENTIFIER',
+    OPERATOR: 'OPERATOR',
+    LITERAL: 'LITERAL',
+    PUNCTUATION: 'PUNCTUATION'
+};
+```
+
+### Step 2: Create a Lexer
+The lexer will break the input code into tokens.
+
+```javascript
+class Lexer {
+    constructor(input) {
+        this.input = input;
+        this.position = 0;
+    }
+
+    nextToken() {
+        this.skipWhitespace();
+
+        if (this.position >= this.input.length) {
+            return null;
+        }
+
+        let char = this.input[this.position];
+
+        if (this.isLetter(char)) {
+            return this.tokenizeIdentifier();
+        }
+
+        if (this.isDigit(char)) {
+            return this.tokenizeLiteral();
+        }
+
+        if (this.isOperator(char)) {
+            this.position++;
+            return { type: TOKEN_TYPES.OPERATOR, value: char };
+        }
+
+        if (this.isPunctuation(char)) {
+            this.position++;
+            return { type: TOKEN_TYPES.PUNCTUATION, value: char };
+        }
+
+        throw new Error(`Unknown character: ${char}`);
+    }
+
+    skipWhitespace() {
+        while (this.position < this.input.length && /\s/.test(this.input[this.position])) {
+            this.position++;
+        }
+    }
+
+    isLetter(char) {
+        return /[a-zA-Z]/.test(char);
+    }
+
+    isDigit(char) {
+        return /\d/.test(char);
+    }
+
+    isOperator(char) {
+        return /[=+\-*/]/.test(char);
+    }
+
+    isPunctuation(char) {
+        return /[;:,(){}]/.test(char);
+    }
+
+    tokenizeIdentifier() {
+        let start = this.position;
+        while (this.position < this.input.length && this.isLetter(this.input[this.position])) {
+            this.position++;
+        }
+        let value = this.input.slice(start, this.position);
+        return { type: TOKEN_TYPES.IDENTIFIER, value };
+    }
+
+    tokenizeLiteral() {
+        let start = this.position;
+        while (this.position < this.input.length && this.isDigit(this.input[this.position])) {
+            this.position++;
+        }
+        let value = this.input.slice(start, this.position);
+        return { type: TOKEN_TYPES.LITERAL, value };
+    }
+}
+
+// Usage example
+let lexer = new Lexer(`hello : constant, string = wow, this works?;`);
+let token;
+while ((token = lexer.nextToken()) !== null) {
+    console.log(token);
+}
+```
+
+### Step 3: Create a Parser
+The parser will convert the tokens into an Abstract Syntax Tree (AST).
+
+```javascript
+class Parser {
+    constructor(tokens) {
+        this.tokens = tokens;
+        this.position = 0;
+    }
+
+    parse() {
+        let ast = [];
+        while (this.position < this.tokens.length) {
+            ast.push(this.parseStatement());
+        }
+        return ast;
+    }
+
+    parseStatement() {
+        let token = this.tokens[this.position];
+
+        if (token.type === TOKEN_TYPES.IDENTIFIER) {
+            return this.parseVariableDeclaration();
+        }
+
+        throw new Error(`Unknown statement: ${token.value}`);
+    }
+
+    parseVariableDeclaration() {
+        let identifier = this.consume(TOKEN_TYPES.IDENTIFIER);
+        this.consume(TOKEN_TYPES.OPERATOR, ':');
+        let type = this.consume(TOKEN_TYPES.IDENTIFIER);
+        this.consume(TOKEN_TYPES.OPERATOR, '=');
+        let value = this.consume(TOKEN_TYPES.LITERAL);
+        this.consume(TOKEN_TYPES.PUNCTUATION, ';');
+
+        return {
+            type: 'VariableDeclaration',
+            identifier: identifier.value,
+            varType: type.value,
+            value: value.value
+        };
+    }
+
+    consume(expectedType, expectedValue = null) {
+        let token = this.tokens[this.position];
+        if (token.type !== expectedType || (expectedValue && token.value !== expectedValue)) {
+            throw new Error(`Unexpected token: ${token.value}`);
+        }
+        this.position++;
+        return token;
+    }
+}
+
+// Usage example
+let lexer = new Lexer(`hello : constant, string = wow, this works?;`);
+let tokens = [];
+let token;
+while ((token = lexer.nextToken()) !== null) {
+    tokens.push(token);
+}
+
+let parser = new Parser(tokens);
+let ast = parser.parse();
+console.log(JSON.stringify(ast, null, 2));
+```
+
+### Step 4: Create an Interpreter
+The interpreter will execute the AST.
+
+```javascript
+class Interpreter {
+    constructor(ast) {
+        this.ast = ast;
+        this.environment = {};
+    }
+
+    interpret() {
+        for (let node of this.ast) {
+            this.execute(node);
+        }
+    }
+
+    execute(node) {
+        switch (node.type) {
+            case 'VariableDeclaration':
+                this.environment[node.identifier] = node.value;
+                console.log(`${node.identifier} = ${node.value}`);
+                break;
+            default:
+                throw new Error(`Unknown node type: ${node.type}`);
+        }
+    }
+}
+
+// Usage example
+let interpreter = new Interpreter(ast);
+interpreter.interpret();
+```
+
+### Final Notes
+- This example covers the basics of a compiler: lexing, parsing, and interpreting.
+- Extend the lexer and parser to cover all language features.
+- Add error handling and optimizations as needed.
+
+You can access your repository [here](https://github.com/StioStudio/language) to continue development.
