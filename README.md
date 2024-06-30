@@ -2,6 +2,19 @@
 * [Basics](#Basics)
 * [Types](#Types)
 
+## Stuff I want to achieve
+I want the language to be easy to use, write and understand for any skill levels, while not limiting the advanced stuff.
+
+Compile to any platform. This will most probably use other languages to compile to. So APIs will sometimes not be accessible to every platform/language. 
+
+The language should feel like yours, so this is one of the first (which I know of) that can customize the language.
+
+Vscode extensions that helps develop the language. Like syntax highlight. Let you know what API is usable where, and give you warnings if you are using stuff that is only accessible on different platforms/languages.
+
+I want a big collection of APIs (stuff that can communicate with stuff outside).
+Some that will be on most platforms/languages: file, date, UI.
+Stuff that will be limited to just some languages: webGPU, memory management, shell/terminal.
+
 ## Basics
 Defines the log function. Parameter inputs is typed and only will allow string and num. 
 ```
