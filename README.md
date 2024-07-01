@@ -77,6 +77,36 @@ log hello
 ```
 Keep in mind that everything in `@: @;` will use the default parser.
 
+## Examples
+```
+hello := -3
+hello = math( hello / |hello| )
+// hello is -1
+```
+
+```
+app : const = platform.createWindow
+ui := app.ui
+
+ui.append ui.create.box
+```
+
+```
+// Simple voronoi script 
+app : const = platform.createWindow
+ui := app.ui
+
+seedRan := new seedRandom
+points : array = array.create.fill(100 /* 100 items */, (pos){return { x : func = { seedRan(pos*10)}, y : func = { seedRan(pos*10+1)} })
+
+ui.forEveryPixel(x, y){
+    closest : string :
+    points.foreach(item){
+        if item >= points[closest] then closest = item
+    }
+}
+```
+
 ## More
 
 You thought ; was needed, didn't you? Ummm...me too 😅. Semi colon will most probably be needed, but, I will try to make it like JavaScript. So it will automatically get injected. (This will be possible to disable, if you like ;)
